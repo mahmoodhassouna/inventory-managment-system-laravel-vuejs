@@ -5,6 +5,11 @@ let logout = require('./components/auth/logout.vue').default;
 
 //home page
 let home = require('./components/home.vue').default;
+
+//employees
+let formEmployee = require('./components/employees/form.vue').default;
+let indexEmployees = require('./components/employees/index.vue').default;
+
 export const routes = [
     //auth
     { path: '/', component:login ,name:'/'},
@@ -14,4 +19,8 @@ export const routes = [
 
     //home page
     { path: '/home', component:home, name:'home' },
+
+    //employees
+    { path: '/form-employee', component:formEmployee, name:'form-employee' },
+    { path: '/employees', component:indexEmployees, name:'employees' },
 ];

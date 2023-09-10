@@ -7,8 +7,7 @@
 
 export default {
     created() {
-       localStorage.removeItem('token')
-       localStorage.removeItem('user')
+        User.logout()
         this.$router.push({name:'/'})
     },
 

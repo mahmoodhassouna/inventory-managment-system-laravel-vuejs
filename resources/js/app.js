@@ -13,6 +13,9 @@ Vue.use(VueRouter);
 import User from './Helpers/User';
 window.User = User;
 
+//Import Notification Class
+import Notification from './Helpers/Notification';
+window.Notification = Notification;
 
 //sweet alert start
 import Swal from 'sweetalert2';

@@ -25,6 +25,10 @@ class User{
         return this.hasToken()
     }
 
+    logout(){
+        AppStorage.clear()
+    }
+
     name(){
         if (this.loggedIn()) {
             return localStorage.getItem('user');

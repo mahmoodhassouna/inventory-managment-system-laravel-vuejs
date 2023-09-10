@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\User;
-use http\Client\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
     /**
      * Create a new AuthController instance.
      *
@@ -20,30 +18,31 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth:api', ['except' => ['login','signup']]);
         $this->middleware('jwt', ['except' => ['login','register']]);
     }
+
+    //
 
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
+        $validateData = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+
+        ]);
+
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Invalid Email or Password !'], 401);
+            return response()->json(['error' => 'Email or Password Invalid'], 401);
         }
 
         return $this->respondWithToken($token);
-    }
-
-    public function register(RegisterRequest $request)
-    {
-      User::create($request->validated());
-      return $this->login();
     }
 
     /**
@@ -76,8 +75,19 @@ class AuthController extends Controller
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
-        //
     }
+
+
+
+    public function register(RegisterRequest $request){
+
+        User::create($request->validated());
+        return $this->login($request);
+
+    }
+
+
+
 
     /**
      * Get the token array structure.
@@ -97,4 +107,12 @@ class AuthController extends Controller
             'email' => auth()->user()->email,
         ]);
     }
+
+
+
+
+
+
+
+
 }
